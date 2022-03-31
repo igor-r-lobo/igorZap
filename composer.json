@@ -46,7 +46,7 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "code-qa": "./vendor/bin/grumphp run"
+        "code-qa": "/vendor/bin/grumphp run"
     },
     "extra": {
         "laravel": {
