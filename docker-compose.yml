@@ -1,6 +1,21 @@
-version: '2'
+version: "3.2"
 
 services:
+  nginx:
+    container_name: nginx
+    image: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./config/nginx/site.conf:/etc/nginx/conf.d/site.conf
+      - ./php_app:/php_app
+    links:
+      - php_app
+  php_app:
+    build: .
+    container_name: php_app
+    volumes:
+      - ./php_app:/php_app
   mariadb:
     image: docker.io/bitnami/mariadb:10.6
     environment:
@@ -8,16 +23,16 @@ services:
       - ALLOW_EMPTY_PASSWORD=yes
       - MARIADB_USER=bn_myapp
       - MARIADB_DATABASE=bitnami_myapp
-  myapp:
+  laravel:
     image: docker.io/bitnami/laravel:9
     ports:
-      - '8000:8000'
+      - 8080:8000
     environment:
       - DB_HOST=mariadb
       - DB_PORT=3306
       - DB_USERNAME=bn_myapp
       - DB_DATABASE=bitnami_myapp
     volumes:
-      - './:/app'
+      - './php_app:/php_app'
     depends_on:
       - mariadb
